@@ -1,0 +1,39 @@
+<html>
+<head>
+	<title>Отчёт о пользователях, имеющих права электронной подписи по офисам</title>
+	<style type="text/css">
+		A {
+			text-decoration: none;
+			color: black;
+		}
+		A:hover {
+			color: blue;
+		}
+	</style>
+</head>
+<body>
+	<p><strong>Отчёт о пользователях, имеющих права электронной подписи по офисам</strong></p>
+
+	<ul>
+	{% for office in offices %}
+			<li>{{ office.name }}</li>
+			<ul>
+			{% for system in office.systems %}
+					<li>{{ system.name }}</li>
+					<ul>
+					{% for user in system.users %}
+						<li>{{ user.name }}</li>
+						<ul>
+						{% for sr in user.srs %}
+							<li><a href="/admin/base/signright/{{ sr.srid }}/">{{ sr.signrightdoc }}</a><br>{{ sr.note|safe }}</li>
+						{% endfor %}
+						</ul>
+					{% endfor %}
+					</ul>
+			{% endfor %}
+			</ul>
+	{% endfor %}
+	</ul>
+
+</body>
+</html>

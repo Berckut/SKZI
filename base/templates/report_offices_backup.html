@@ -1,0 +1,67 @@
+<html>
+<head>
+	<title>Отчёт по офисам</title>
+	<style type="text/css">
+		A {
+			text-decoration: none;
+			color: black;
+		}
+		A:hover {
+			color: blue;
+		}
+
+		A1 {
+			text-decoration: none;
+			color: gray;
+		}
+		A1:hover {
+			color: blue;
+		}
+
+		A2 {
+			text-decoration: none;
+			color: green;
+		}
+		A2:hover {
+			color: blue;
+		}
+	</style>
+</head>
+<body>
+	<p><strong>Отчёт по офисам</strong></p>
+
+	<ul>
+	{% for office in offices %}
+			<li>{{ office.name }}</li>
+			<ul>
+			{% for user in office.users %}
+					<li><a href="/admin/base/nkiout/?user__id__exact={{ user.userid }}&date2__isnull=True">{{ user.name }}</a></li>
+					<ul>
+					{% for nki in user.nkis %}
+						{% if nki.arm %}
+							<li><a href="/admin/base/arm/{{ nki.nkiid }}">{{ nki.regnumber }}</a> </a> <a href="/admin/base/kdrecord/add/?arm={{ nki.nkiid }}"><A1>[Записать новый ключ...]</A1></a></li>
+						{% else %}
+							{% if nki.nkioutid %}
+								<li><a href="/admin/base/nki/{{ nki.nkiid }}/">{{ nki.regnumber }}</a> <a href="/admin/base/nkiout/{{ nki.nkioutid }}/"><A1>[Выдан {{ nki.nkioutdate1 }}]</A1></a> <a href="/admin/base/kdrecord/add/?nki={{ nki.nkiid }}"><A1>[Записать новый ключ...]</A1></a></li>
+							{% else %}
+								<li><a href="/admin/base/nki/{{ nki.nkiid }}/">{{ nki.regnumber }}</a> <a href="/admin/base/nkiout/add/?nki={{ nki.nkiid }}"><A1>[Выдать...]</A1></a> <a href="/admin/base/kdrecord/add/?nki={{ nki.nkiid }}"><A1>[Записать новый ключ...]</A1></a></li>
+							{% endif %}
+						{% endif %}
+						<ul>
+						{% for kd in nki.kds %}
+							{% if kd.kdbackup %}
+								<li><a href="/admin/base/kd/{{ kd.kdid }}/"><A2>р/к {{ kd.name }}</A2></a> <a href="/admin/base/kdrecord/?kd__id__exact={{ kd.kdid }}"><A1>[Экз.№{{ kd.kdrec }}]</A1></a> <a href="/admin/base/kdrecord/add/?kd={{ kd.kdid }}"><A1>[Сделать копию ключа...]</A1></a></li>
+							{% else %}
+								<li><a href="/admin/base/kd/{{ kd.kdid }}/">{{ kd.name }}</a> <a href="/admin/base/kdrecord/?kd__id__exact={{ kd.kdid }}"><A1>[Экз.№{{ kd.kdrec }}]</A1></a> <a href="/admin/base/kdrecord/add/?kd={{ kd.kdid }}"><A1>[Сделать копию ключа...]</A1></a></li>
+							{% endif %}
+						{% endfor %}
+						</ul>
+					{% endfor %}
+					</ul>
+			{% endfor %}
+			</ul>
+	{% endfor %}
+	</ul>
+
+</body>
+</html>

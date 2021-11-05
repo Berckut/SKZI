@@ -1,0 +1,82 @@
+<html>
+<head>
+	<title>Отчёт по ключевым документам, срок действия которых истекает</title>
+	<style type="text/css">
+		A {
+			text-decoration: none;
+			color: black;
+		}
+		A:hover {
+			color: blue;
+		}
+		A1 {
+			text-decoration: none;
+			color: gray;
+		}
+		A1:hover {
+			color: blue;
+		}
+		A2 {
+			text-decoration: none;
+			color: green;
+		}
+		A2:hover {
+			color: blue;
+		}
+		A3 {
+			text-decoration: none;
+			color: orange;
+		}
+		A3:hover {
+			color: blue;
+		}
+		A4 {
+			text-decoration: none;
+			color: red;
+		}
+		A4:hover {
+			color: blue;
+		}
+	</style>
+</head>
+<body>
+	<p><strong>Отчёт по ключевым документам, срок действия которых истекает</strong></p>
+
+	<ul>
+	{% for date2 in dates %}
+		<li><strong>{{ date2.date2 }}</strong>
+
+			<ul>
+				{% for kd in date2.kds %}
+					{% if kd.update %}
+						<li><a href="/admin/base/kd/{{ kd.kdid }}/"><strong><A2>{{ kd.label }} - Заменён</A2></strong></a></li>
+					{% else %}
+						{% if kd.last %}
+							<li><a href="/admin/base/kd/{{ kd.kdid }}/"><strong><A3>{{ kd.label }}</strong></A3></a> <a style="color: gray" href="/admin/base/kdupdate/add/?kd_old={{ kd.kdid }}"><A1>[Зарегистрировать замену...]</A1></a></li>
+						{% else %}
+							<li><a href="/admin/base/kd/{{ kd.kdid }}/"><strong><A4>{{ kd.label }} - Просрочен</strong></A4></a></strong> <a style="color: gray" href="/admin/base/kdupdate/add/?kd_old={{ kd.kdid }}"><A1>[Зарегистрировать замену...]</A1></a></li>
+						{% endif %}
+					{% endif %}
+
+
+						Тип КД: {{ kd.kdtype }}<br>
+						Сер. номер: {{ kd.sernumber }}<br>
+						Владелец: {{ kd.user }}<br>
+						Офис: {{ kd.office }}<br>
+						Система: {{ kd.system }}<br>
+						Дата начала действия: {{ kd.date1 }}<br>
+						<strong>Экземпляры:</strong><br>
+						<ul>
+							{% for nki in kd.nkis %}
+								<li><a href="/admin/base/kdrecord/{{ nki.kdrecord }}/">{{ nki.name }}</a></li>
+							{% endfor %}
+						</ul><br>
+
+				{% endfor %}
+			</ul></li>
+			
+	{% endfor %}
+	</ul>
+
+</body>
+</html>

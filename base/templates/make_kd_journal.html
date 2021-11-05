@@ -1,0 +1,51 @@
+<html>
+<head>
+	<title>Журнал учёта ключевых документов</title>
+</head>
+<body>
+
+	{% for year in kdjournalyears %}
+		<p><strong>Журнал учёта ключевых документов за {{ year.year|safe }}г.</strong></p>
+
+		<table border=0 cellspacing=1 width="100%">
+			<tr bgcolor=#DCDCDC>
+				<th>№<br>п/п</th>
+				<th>Дата</th>
+				<th>Тип и<br>рег. номер НКИ</th>
+				<th>Сер. номер контейнера<br>(каталог, файл)</th>
+				<th>Тип КД</th>
+				<th>Дата выпуска,<br>сер. номер КД</th>
+				<th>Владелец КД</th>
+				<th>Дата<br>стирания</th>
+				<th>Стёр<br>администратор</th>
+				<th>Примечание</th>
+			</tr>		
+
+			{% for kd in year.kdjournal %}
+				{% if kd.date2 %}
+					<tr bgcolor=#696969>
+				{% else %}
+					{% if kd.backup %}
+						<tr bgcolor=#FFFACD>
+					{% else %}
+						<tr bgcolor=#F5F5F5>
+					{% endif %}
+				{% endif %}
+
+				<td>{{ kd.number|safe }}</td>
+				<td>{{ kd.date1|safe }}</td>
+				<td>{{ kd.nki|safe }}</td>
+				<td>{{ kd.storage|safe }}</td>
+				<td>{{ kd.typekd|safe }}</td>
+				<td>{{ kd.cert|safe }}</td>
+				<td>{{ kd.user|safe }}</td>
+				<td>{{ kd.date2|safe }}</td>
+				<td>{{ kd.admin|safe }}</td>
+				<td>{{ kd.note|safe }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endfor %}
+
+</body>
+</html>

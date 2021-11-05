@@ -1,0 +1,40 @@
+<html>
+<head>
+	<title>Статистический отчёт</title>
+</head>
+<body>
+
+	{% for year in statyears %}
+		<p><strong>Статистический отчёт за {{ year.year|safe }}г.</strong></p>
+
+		<table border=0 cellspacing=1 width="100%">
+			<tr bgcolor=Gainsboro>
+				<th>Показатели / Период</th>
+				<th>Январь</th>
+				<th>Февраль</th>
+				<th>Март</th>
+				<th>Апрель</th>
+				<th>Май</th>
+				<th>Июнь</th>
+				<th>Июль</th>
+				<th>Август</th>
+				<th>Сентябрь</th>
+				<th>Октябрь</th>
+				<th>Ноябрь</th>
+				<th>Декабрь</th>
+				<th>За год</th>
+			</tr>		
+
+			{% for indicator in year.indicator %}
+				<td>{{ indicator.name|safe }}</td>
+				{% for month in indicator.months %}
+					<td align=right>{{ month|safe }}</td>
+				{% endfor %}
+				<td align=right>{{ indicator.common|safe }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endfor %}
+
+</body>
+</html>

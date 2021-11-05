@@ -1,0 +1,92 @@
+<html>
+<head>
+	<title>Отчёт по офисам</title>
+	<style type="text/css">
+		A {
+			text-decoration: none;
+			color: black;
+		}
+		A:hover {
+			color: blue;
+		}
+
+		A1 {
+			text-decoration: none;
+			color: gray;
+		}
+		A1:hover {
+			color: blue;
+		}
+
+		A2 {
+			text-decoration: none;
+			color: green;
+		}
+		A2:hover {
+			color: blue;
+		}
+		ul.report-off  {
+			overflow: hidden;
+			padding-bottom: 100px;
+		}
+		ul.report-off li {
+			position: relative;
+			float: left;
+			clear: both;
+		}
+		ul.report-off li .popup {
+			display: none;
+			position: absolute;
+			top: 100%;
+			left: 0;
+			padding: 5px;
+			background: #fff;
+			border: 1px solid #000;
+			z-index: 10;
+		} 
+		ul.report-off li .popup a {
+			white-space: nowrap;
+		}
+		ul.report-off li:hover .popup {
+			display:block;
+		}
+	</style>
+</head>
+<body>
+	<p><strong>Отчёт по офисам</strong></p>
+
+	<ul class="report-off">
+	{% for office in offices %}
+			<li>{{ office.name }}</li>
+			<ul>
+			{% for user in office.users %}
+					<li><a href="/admin/base/nkiout/?user__id__exact={{ user.userid }}&date2__isnull=True" target="_blank">{{ user.name }}</a><!--<div class="popup"></div>--></li>
+					<ul>
+					{% for nki in user.nkis %}
+						{% if nki.arm %}
+							<li><a href="/admin/base/arm/{{ nki.nkiid }}" target="_blank">{{ nki.regnumber }}</a><div class="popup"> <a href="/admin/base/kdrecord/add/?arm={{ nki.nkiid }}" target="_blank"><A1>[Записать новый ключ...]</A1></a></div></li>
+						{% else %}
+							{% if nki.nkioutid %}
+								<li><a href="/admin/base/nki/{{ nki.nkiid }}/" target="_blank">{{ nki.regnumber }}</a> <div class="popup"><a href="/admin/base/nkiout/{{ nki.nkioutid }}/" target="_blank"><A1>[Выдан {{ nki.nkioutdate1 }}]</A1></a> <br/><a href="/admin/base/kdrecord/add/?nki={{ nki.nkiid }}" target="_blank"><A1>[Записать новый ключ...]</A1></a></div></li>
+							{% else %}
+								<li><a href="/admin/base/nki/{{ nki.nkiid }}/" target="_blank">{{ nki.regnumber }}</a> <div class="popup"><a href="/admin/base/nkiout/add/?nki={{ nki.nkiid }}" target="_blank"><A1>[Выдать...]</A1></a> <br/><a href="/admin/base/kdrecord/add/?nki={{ nki.nkiid }}" target="_blank"><A1>[Записать новый ключ...]</A1></a></div></li>
+							{% endif %}
+						{% endif %}
+						<ul>
+						{% for kd in nki.kds %}
+							{% if kd.kdbackup %}
+								<li><a href="/admin/base/kd/{{ kd.kdid }}/" target="_blank"><A2>р/к {{ kd.name }}</A2></a> <div class="popup"><a href="/admin/base/kdrecord/?kd__id__exact={{ kd.kdid }}" target="_blank"><A1>[Экз.№{{ kd.kdrec }}]</A1></a> <br/><a href="/admin/base/kdrecord/add/?kd={{ kd.kdid }}" target="_blank"><A1>[Сделать копию ключа...]</A1></a></div></li>
+							{% else %}
+								<li><a href="/admin/base/kd/{{ kd.kdid }}/" target="_blank">{{ kd.name }}</a> <div class="popup"><a href="/admin/base/kdrecord/?kd__id__exact={{ kd.kdid }}" target="_blank"><A1>[Экз.№{{ kd.kdrec }}]</A1></a> <br/><a href="/admin/base/kdrecord/add/?kd={{ kd.kdid }}" target="_blank"><A1>[Сделать копию ключа...]</A1></a></div></li>
+							{% endif %}
+						{% endfor %}
+						</ul>
+					{% endfor %}
+					</ul>
+			{% endfor %}
+			</ul>
+	{% endfor %}
+	</ul>
+
+</body>
+</html>

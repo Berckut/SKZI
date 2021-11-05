@@ -1,0 +1,38 @@
+<html>
+<head>
+	<title>Журнал выдачи носителей ключевой информации и программного обеспечения СКЗИ</title>
+</head>
+<body>
+	{% for year in nkioutjournalyears %}
+		<p><strong>Журнал выдачи носителей ключевой информации и программного обеспечения СКЗИ за {{ year.year|safe }}г.</strong></p>
+
+		<table border=0 cellspacing=1 width="100%">
+			<tr bgcolor=#DCDCDC>
+				<th>ФИО (Организация)</th>
+				<th>Тип и регистрационный номер носителя</th>
+				<th>Дата выдачи</th>
+				<th>Дата возврата</th>
+				<th>Принял администратор</th>
+				<th>Примечание</th>
+			</tr>		
+
+			{% for nki in year.nkioutjournal %}
+				{% if nki.date2 %}
+					<tr bgcolor=#696969>
+				{% else %}
+					<tr bgcolor=#F5F5F5>
+				{% endif %}
+
+					<td>{{ nki.user|safe }}</td>
+					<td>{{ nki.nki|safe }}</td>
+					<td>{{ nki.date1|safe }}</td>
+					<td>{{ nki.date2|safe }}</td>
+					<td>{{ nki.admin2|safe }}</td>
+					<td>{{ nki.note|safe }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endfor %}
+
+</body>
+</html>
